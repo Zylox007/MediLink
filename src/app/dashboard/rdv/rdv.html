@@ -1,1 +1,107 @@
-<p>rdv works!</p>
+<div class="content-area">
+  <header class="content-header">
+    <div class="header-title">
+      <h1><i class="fas fa-calendar-alt"></i> Mes Rendez-vous</h1>
+    </div>
+  </header>
+
+  <!-- Contrôles du calendrier -->
+  <div class="calendar-controls">
+  <button class="nav-btn" (click)="previousMonth()">
+    <i class="fas fa-arrow-left"></i> <!-- Flèche gauche -->
+  </button>
+
+  <h2>
+    <i class="fas fa-calendar-alt"></i> <!-- Icône calendrier -->
+    {{ currentMonthName }} {{ currentYear }}
+  </h2>
+
+  <button class="nav-btn" (click)="nextMonth()">
+    <i class="fas fa-arrow-right"></i> <!-- Flèche droite -->
+  </button>
+</div>
+
+  <!-- Calendrier -->
+  <div class="calendar-grid">
+    <!-- Jours de la semaine -->
+     @for (day of daysOfWeek; track $index) {
+        <div class="calendar-day-header">{{ day }}</div>
+     }
+     @for (day of calendarDays; track $index) {
+        <div class="calendar-day"
+         [class.other-month]="day.otherMonth"
+         [class.today]="day.isToday"
+         (click)="selectDay(day)">
+        <div class="day-number">{{ day.date.getDate() }}</div>
+        @if (day.appointments.length > 0) {
+            <div class="appointments-list">
+                @for (appt of day.appointments; track $index) {
+                    <div class="appointment-item">
+                    <i class="fas fa-user-md"></i>
+                    {{ appt.heure }} - Dr {{ appt.idMedecin }} ({{ appt.statut }})
+                </div>
+                }
+                
+            </div>
+        }
+
+      
+    </div>
+     }
+
+    <!-- Jours du mois -->
+    
+  </div>
+   @if (selectedDay) {
+    <div class="selected-day">
+        <h3>{{ selectedDay!.date | date:'fullDate' }}</h3>
+        <ul>
+        @for (appt of selectedDay.appointments; track $index) {
+            <li>
+                <div class="appt-info">
+                    {{ appt.heure }} - Dr {{ appt.idMedecin }} - {{ appt.statut }}
+                </div>
+                <div class="appt-actions">
+                    @if (appt.statut!="annulé") {
+                          <button class="btn-modifier" (click)="openModal(appt)">
+                          Modifier
+                        </button>
+                          <button class="btn-annuler" (click)="annulerRdv(appt)">
+                          Annuler
+                        </button>
+                    }
+                </div>
+            </li>
+            
+
+        }
+        
+        </ul>
+    </div>
+   }
+  
+</div>
+@if (showEditModal) {
+  <div class="modal-overlay">
+  <div class="modal-content">
+    <h2><i class="fas fa-edit"></i> Modifier le Rendez-vous</h2>
+
+    <form (ngSubmit)="updateRdv()" #editForm="ngForm">
+      <div class="form-group">
+        <label for="newDate"><i class="fas fa-calendar-alt"></i> Nouvelle date</label>
+        <input type="date" id="newDate" [(ngModel)]="editDate" name="newDate" required>
+      </div>
+
+      <div class="form-group">
+        <label for="newHeure"><i class="fas fa-clock"></i> Nouvelle heure</label>
+        <input type="time" id="newHeure" [(ngModel)]="editHeure" name="newHeure" required>
+      </div>
+
+      <div class="modal-actions">
+        <button type="submit" class="btn-save">💾 Enregistrer</button>
+        <button type="button" class="btn-cancel" (click)="closeModal()">❌ Fermer</button>
+      </div>
+    </form>
+  </div>
+</div>
+}

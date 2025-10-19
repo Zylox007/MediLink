@@ -8,17 +8,29 @@
     </header>
 
     <div class="content-area">
-        <!-- Search & Filter Bar -->
+
         <div class="search-filter-bar">
             <div class="search-container">
                 <i class="fas fa-search search-icon"></i>
-                <input type="text" class="search-input" placeholder="Rechercher un médecin (nom, spécialité)...">
+                <input type="text" class="search-input" placeholder="Rechercher un médecin nom..." [(ngModel)]="searchTerm" (input)="filterMedecins()">
             </div>
             <div class="filter-button">
                 <button class="btn-filter">
                     <i class="fas fa-filter"></i>
                     <span>Filtres</span>
                 </button>
+            </div>
+            <div class="filter-container">
+                <select [(ngModel)]="selectedSpecialty" (change)="filterMedecins()">
+                <option>Toutes spécialités</option>
+                <option>Généraliste</option>
+                <option>Cardiologue</option>
+                <option>Dermatologue</option>
+                <option>Pédiatre</option>
+                <option>Ophtalmologue</option>
+                <option>ORL</option>
+                <option>Orthopédiste</option>
+                </select>
             </div>
         </div>
 
@@ -64,97 +76,29 @@
 
         <!-- Stats Mini -->
         <div class="stats-mini">
-            <span class="stats-text"><i class="fas fa-users"></i> 247 médecins disponibles</span>
+            <span class="stats-text"><i class="fas fa-users"></i> {{ nbMedecins }} médecins disponibles</span>
             <span class="stats-text"><i class="fas fa-calendar-check"></i> 89 RDV aujourd'hui</span>
         </div>
 
         <!-- Doctors Grid -->
         <div class="doctors-grid">
-            <!-- Doctor Card 1 -->
+        @for (med of filteredMedecins; track $index) {
             <div class="doctor-card">
-                <div class="doctor-photo">
-                    <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=150&h=150&fit=crop&crop=face" alt="Dr. Sophie Martin">
-                    <div class="doctor-status online"></div>
-                </div>
-                <div class="doctor-info">
-                    <h3>Dr. Sophie Martin</h3>
-                    <span class="doctor-specialty">Médecin Généraliste</span>
-                    <div class="doctor-rating">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        <span>4.9 (127 avis)</span>
-                    </div>
-                    <p class="doctor-location"><i class="fas fa-map-marker-alt"></i> Centre-ville</p>
-                </div>
-                <div class="doctor-actions">
-                    <button class="btn-rdv">Prendre RDV</button>
-                    <span class="doctor-availability">Disponible maintenant</span>
-                </div>
+            <div class="doctor-info">
+            <h3>{{ med.prenom }} {{ med.nom }}</h3>
+            <span class="doctor-specialty">{{ med.specialite }}</span>
+            <p class="doctor-location"><i class="fas fa-map-marker-alt"></i> {{ med.cabinet }}</p>
             </div>
-
-            <!-- Doctor Card 2 -->
-            <div class="doctor-card">
-                <div class="doctor-photo">
-                    <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=150&h=150&fit=crop&crop=face" alt="Dr. Paul Durand">
-                    <div class="doctor-status offline"></div>
-                </div>
-                <div class="doctor-info">
-                    <h3>Dr. Paul Durand</h3>
-                    <span class="doctor-specialty">Cardiologue</span>
-                    <div class="doctor-rating">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
-                        <span>4.7 (89 avis)</span>
-                    </div>
-                    <p class="doctor-location"><i class="fas fa-map-marker-alt"></i> Bellevue</p>
-                </div>
-                <div class="doctor-actions">
-                    <button class="btn-rdv">Prendre RDV</button>
-                    <span class="doctor-availability">Premier créneau : 14h30</span>
-                </div>
+            <div class="doctor-actions">
+            <button class="btn-rdv" (click)="Onrdv(med.idUtilisateur!)">Prendre RDV</button>
+            <span class="doctor-availability" 
+                    [class.available]="med.disponibilite" 
+                    [class.unavailable]="!med.disponibilite">
+                {{ med.disponibilite ? 'Disponible' : 'Indisponible' }}
+            </span>
             </div>
-
-            <!-- Doctor Card 3 -->
-            <div class="doctor-card">
-                <div class="doctor-photo">
-                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face" alt="Dr. Marie Dubois">
-                    <div class="doctor-status online"></div>
-                </div>
-                <div class="doctor-info">
-                    <h3>Dr. Marie Dubois</h3>
-                    <span class="doctor-specialty">Dermatologue</span>
-                    <div class="doctor-rating">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        <span>5.0 (203 avis)</span>
-                    </div>
-                    <p class="doctor-location"><i class="fas fa-map-marker-alt"></i> Saint-Germain</p>
-                </div>
-                <div class="doctor-actions">
-                    <button class="btn-rdv">Prendre RDV</button>
-                    <span class="doctor-availability">Disponible maintenant</span>
-                </div>
-            </div>
-
-            <!-- Doctor Card 4 -->
-            <div class="doctor-card">
-                <div class="doctor-photo">
-                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face" alt="Dr. Jean Leroy">
-                    <div class="doctor-status away"></div>
-                </div>
-                <div class="doctor-info">
-                    <h3>Dr. Jean Leroy</h3>
-                    <span class="doctor-specialty">Pédiatre</span>
-                    <div class="doctor-rating">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
-                        <span>4.8 (156 avis)</span>
-                    </div>
-                    <p class="doctor-location"><i class="fas fa-map-marker-alt"></i> La Montagne</p>
-                </div>
-                <div class="doctor-actions">
-                    <button class="btn-rdv">Prendre RDV</button>
-                    <span class="doctor-availability">Demain 9h00</span>
-                </div>
-            </div>
-
-            <!-- Ajoutez plus de cartes ici... -->
         </div>
+        }
+        
     </div>
 

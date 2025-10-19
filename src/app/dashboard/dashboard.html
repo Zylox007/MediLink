@@ -12,28 +12,34 @@
                     <div class="user-avatar">
                         <div class="avatar-icon"><i class="fas fa-user-md"></i></div>
                     </div>
-                    <h3>Mr Yassine Achour</h3>
+                    <h3>Mr {{ user?.nom }} {{ user?.prenom }}</h3>
                     <span class="user-role">Patient</span>
                 </div>
             </div>
             
             <ul class="sidebar-nav">
                 <li class="nav-item">
-                    <a [routerLink]="['/dashboard/acc-dashboard']" class="nav-link active">
+                    <a [routerLink]="['/dashboard', id, 'acc-dashboard']" class="nav-link active">
                         <span class="nav-icon"><i class="fas fa-home"></i></span>
                         <span class="nav-text">Tableau de Bord</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a [routerLink]="['/dashboard/rdv']" class="nav-link">
+                    <a [routerLink]="['/dashboard', id, 'rdv']" class="nav-link">
                         <span class="nav-icon"><i class="fas fa-calendar-check"></i></span>
                         <span class="nav-text">Rendez-vous</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a [routerLink]="['/dashboard/list-med']" class="nav-link">
+                    <a [routerLink]="['/dashboard', id, 'list-med']" class="nav-link">
                         <span class="nav-icon"><i class="fas fa-user-injured"></i></span>
                         <span class="nav-text">Liste des Médecins</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a [routerLink]="['/dashboard', id, 'chat-bot']" class="nav-link">
+                        <span class="nav-icon"><i class="fas fa-comments"></i></span>
+                        <span class="nav-text">Chat Bot</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -62,10 +68,10 @@
                 </li>
             </ul>
         </aside>
-
         <!-- Main Content -->
         <main class="main-content">
             <router-outlet></router-outlet>
         </main>
     </div>
+    
 </body>
