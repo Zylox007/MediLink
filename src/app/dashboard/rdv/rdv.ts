@@ -142,7 +142,7 @@ updateRdv() {
       this.closeModal();
       this.loadRendezvous(); // 🔄 recharge la liste
     },
-    error: err => console.error(err)
+    error: err => alert(err.error.message || 'Une erreur est survenue lors de la prise de rendez-vous.')
   });
 }
 }

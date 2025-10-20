@@ -23,8 +23,8 @@ export class PrendreRdv implements OnInit {
   constructor(private route: ActivatedRoute,private medecinService: MedecinService, private patientService: PatientService) {}
 
   ngOnInit(): void {
-    this.id = Number(this.route.parent?.snapshot.params['idp']); 
-    this.idm = Number(this.route.snapshot.params['idm']); 
+    this.id = Number(this.route.parent?.snapshot.params['idp']);
+    this.idm = Number(this.route.snapshot.params['idm']);
     const today = new Date();
     this.minDate = today.toISOString().split('T')[0];
   }
@@ -58,16 +58,19 @@ export class PrendreRdv implements OnInit {
 
   // Appel au service
   this.patientService.prendreRdv(newRdv).subscribe({
-    next: (res) => {
+    next: (res : any) => {
+      console.log('Réponse du serveur :', res);
       if (res.success) {
         console.log('Rendez-vous créé avec succès :', res.rendezvous);
         alert('Votre rendez-vous a été pris !');
         // Optionnel : redirection ou reset du formulaire
       } else {
         console.error('Erreur lors de la création du rendez-vous');
+
       }
     },
     error: (err) => {
+       alert(err.error.message || 'Une erreur est survenue lors de la prise de rendez-vous.');
       console.error('Erreur serveur :', err);
     }
   });
