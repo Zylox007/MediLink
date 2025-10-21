@@ -18,23 +18,28 @@ export class ChatBot implements OnInit {
   ngOnInit(): void {
     this.id = this.route.parent?.snapshot.params['idp'];
   }
+  // Envoie le message de l'utilisateur au chatbot
   envoyer() {
+    // Ne rien faire si le message est vide
     if (!this.message.trim()) return;
 
-    // Afficher le message utilisateur
+    // Ajoute le message de l'utilisateur à l'historique
     this.messages.push({ from: 'user', text: this.message });
 
-    // Appeler le backend
+    // Appelle le service pour envoyer le message au backend
     this.botService.envoyerMessage(this.message).subscribe({
       next: (res) => {
+        // Ajoute la réponse du bot à l'historique
         this.messages.push({ from: 'bot', text: res.reply });
       },
       error: (err) => {
         console.error('Erreur chatbot:', err);
+        // Affiche un message d'erreur côté utilisateur
         this.messages.push({ from: 'bot', text: 'Erreur serveur 😢' });
       }
     });
 
+    // Réinitialise le champ de saisie
     this.message = '';
   }
 }

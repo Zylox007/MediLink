@@ -1,3 +1,5 @@
+import { Medecin } from "./list-med/medecin";
+
 export class Patient {
   constructor(
     public idUtilisateur?: number,
@@ -17,6 +19,7 @@ export class Rendezvous {
     public heure?: string,
     public statut?: string,
     public idMedecin?: number,
-    public idPatient?: number
+    public idPatient?: number,
+    public medecin?: Medecin
   ) {}
 }

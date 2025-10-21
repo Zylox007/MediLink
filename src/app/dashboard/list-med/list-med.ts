@@ -48,7 +48,7 @@ export class ListMed implements OnInit {
   }
   filterMedecins() {
   this.filteredMedecins = this.medecins.filter(med => {
-    const nom = med?.nom ?? ''; // si nom est undefined, on met une chaîne vide
+    const nom = med?.nom ?? '';
     const prenom = med?.prenom ?? '';
     const specialite = med?.specialite ?? '';
 
@@ -67,7 +67,6 @@ export class ListMed implements OnInit {
 }
   Onrdv(idm: number) {
     console.log("rdv clicked");
-    // Rediriger vers la page de prise de rendez-vous avec l'ID du médecin
     this.router.navigate(['/dashboard', this.id, 'prendre-rdv', idm]);
   }
 }

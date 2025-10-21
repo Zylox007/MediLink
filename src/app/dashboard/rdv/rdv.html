@@ -5,19 +5,18 @@
     </div>
   </header>
 
-  <!-- Contrôles du calendrier -->
   <div class="calendar-controls">
   <button class="nav-btn" (click)="previousMonth()">
-    <i class="fas fa-arrow-left"></i> <!-- Flèche gauche -->
+    <i class="fas fa-arrow-left"></i>
   </button>
 
   <h2>
-    <i class="fas fa-calendar-alt"></i> <!-- Icône calendrier -->
+    <i class="fas fa-calendar-alt"></i>
     {{ currentMonthName }} {{ currentYear }}
   </h2>
 
   <button class="nav-btn" (click)="nextMonth()">
-    <i class="fas fa-arrow-right"></i> <!-- Flèche droite -->
+    <i class="fas fa-arrow-right"></i>
   </button>
 </div>
 
@@ -38,7 +37,7 @@
                 @for (appt of day.appointments; track $index) {
                     <div class="appointment-item">
                     <i class="fas fa-user-md"></i>
-                    {{ appt.heure }} - Dr {{ appt.idMedecin }} ({{ appt.statut }})
+                    {{ appt.heure }} - Dr {{medecin.nom}} ({{ appt.statut }})
                 </div>
                 }
                 
@@ -49,7 +48,6 @@
     </div>
      }
 
-    <!-- Jours du mois -->
     
   </div>
    @if (selectedDay) {
@@ -59,7 +57,7 @@
         @for (appt of selectedDay.appointments; track $index) {
             <li>
                 <div class="appt-info">
-                    {{ appt.heure }} - Dr {{ appt.idMedecin }} - {{ appt.statut }}
+                    {{ appt.heure }} - Dr {{medecin.nom}} {{medecin.prenom}} - {{medecin.specialite}} - {{ appt.statut }}
                 </div>
                 <div class="appt-actions">
                     @if (appt.statut!="annulé") {

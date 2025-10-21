@@ -34,7 +34,6 @@
             </div>
         </div>
 
-        <!-- Filters Dropdown (Hidden by default) -->
         <div class="filters-dropdown" id="filtersDropdown">
             <div class="filter-group">
                 <label><i class="fas fa-stethoscope"></i> Spécialité</label>
@@ -74,13 +73,10 @@
             </div>
         </div>
 
-        <!-- Stats Mini -->
         <div class="stats-mini">
             <span class="stats-text"><i class="fas fa-users"></i> {{ nbMedecins }} médecins disponibles</span>
-            <span class="stats-text"><i class="fas fa-calendar-check"></i> 89 RDV aujourd'hui</span>
         </div>
 
-        <!-- Doctors Grid -->
         <div class="doctors-grid">
         @for (med of filteredMedecins; track $index) {
             <div class="doctor-card">

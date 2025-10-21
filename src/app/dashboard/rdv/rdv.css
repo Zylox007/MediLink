@@ -91,6 +91,20 @@
     overflow: hidden;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.calendar-grid::-webkit-scrollbar {
+    height: 6px;
+}
+
+.calendar-grid::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.calendar-grid::-webkit-scrollbar-thumb {
+    background: #667eea;
+    border-radius: 3px;
 }
 
 /* Jours de la semaine (Header) */
@@ -138,12 +152,12 @@
     color: #bdc3c7;
 }
 
-.calendar-day.today {
-    background: linear-gradient(135deg, #51cf66 0%, #40c057 100%) !important;
+.calendar-day.today, .calendar-day.has-appointments {
+    background: linear-gradient(135deg, #51cf66 0%, #40c057 100%);
     color: white;
 }
 
-.calendar-day.today::after {
+.calendar-day.today::after, .calendar-day.has-appointments::after {
     content: '';
     position: absolute;
     top: 0;
@@ -155,13 +169,14 @@
 
 .day-number {
     font-weight: 700;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     margin-bottom: auto;
     z-index: 2;
     position: relative;
+    color: #2c3e50;
 }
 
-.calendar-day.today .day-number {
+.calendar-day.today .day-number, .calendar-day.has-appointments .day-number {
     color: white;
 }
 
@@ -177,7 +192,7 @@
     padding: 0.5rem;
     border-radius: 8px;
     margin-bottom: 0.25rem;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     display: flex;
     align-items: center;
     gap: 0.25rem;
@@ -185,6 +200,7 @@
     border-left: 3px solid transparent;
     transition: all 0.3s ease;
     overflow: hidden;
+    color: #2c3e50;
 }
 
 .appointment-item i {
@@ -199,17 +215,17 @@
 }
 
 /* Couleurs par statut RDV */
-.appointment-item:has-text("confirmé") .appointment-item {
+.appointment-item:has-text("confirmé") {
     border-left-color: #51cf66 !important;
     background: #d4edda !important;
 }
 
-.appointment-item:has-text("en attente") .appointment-item {
+.appointment-item:has-text("en attente") {
     border-left-color: #f0932b !important;
     background: #fff3cd !important;
 }
 
-.appointment-item:has-text("annulé") .appointment-item {
+.appointment-item:has-text("annulé") {
     border-left-color: #ff6b6b !important;
     background: #f8d7da !important;
     opacity: 0.7;
@@ -222,6 +238,7 @@
     padding: 2rem;
     box-shadow: 0 8px 25px rgba(0,0,0,0.08);
     margin-top: 2rem;
+    animation: fadeInUp 0.6s ease 0.2s both;
 }
 
 .selected-day h3 {
@@ -269,6 +286,135 @@
 
 .selected-day li:last-child {
     margin-bottom: 0;
+}
+
+/* Actions des rendez-vous */
+.appt-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-modifier,
+.btn-annuler {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 🟦 Bouton Modifier */
+.btn-modifier {
+    background-color: #3498db;
+    color: #fff;
+}
+
+.btn-modifier:hover {
+    background-color: #2980b9;
+    transform: scale(1.05);
+    box-shadow: 0 3px 6px rgba(52, 152, 219, 0.4);
+}
+
+/* 🔴 Bouton Annuler */
+.btn-annuler {
+    background-color: #e74c3c;
+    color: #fff;
+}
+
+.btn-annuler:hover {
+    background-color: #c0392b;
+    transform: scale(1.05);
+    box-shadow: 0 3px 6px rgba(231, 76, 60, 0.4);
+}
+
+/* 💡 Pour mobile : les boutons s’empilent */
+@media (max-width: 600px) {
+    .appt-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .btn-modifier,
+    .btn-annuler {
+        width: 100%;
+    }
+}
+
+/* Overlay du modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+/* Contenu du modal */
+.modal-content {
+    background: #fff;
+    padding: 25px 30px;
+    border-radius: 12px;
+    width: 400px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    animation: slideDown 0.3s ease;
+}
+
+.modal-content h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+/* Boutons */
+.btn-save {
+    background-color: #27ae60;
+    color: white;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.btn-save:hover {
+    background-color: #1e8449;
+    transform: scale(1.05);
+}
+
+.btn-cancel {
+    background-color: #e74c3c;
+    color: white;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.btn-cancel:hover {
+    background-color: #c0392b;
+    transform: scale(1.05);
 }
 
 /* RESPONSIVE */
@@ -374,155 +520,7 @@
     }
 }
 
-.calendar-grid {
-    animation: fadeInUp 0.6s ease forwards;
-}
-
-.selected-day {
-    animation: fadeInUp 0.6s ease 0.2s both;
-}
-
-/* SCROLLBAR */
-.calendar-grid::-webkit-scrollbar {
-    height: 6px;
-}
-
-.calendar-grid::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-.calendar-grid::-webkit-scrollbar-thumb {
-    background: #667eea;
-    border-radius: 3px;
-}
-.appt-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.btn-modifier,
-.btn-annuler {
-  padding: 8px 14px;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* 🟦 Bouton Modifier */
-.btn-modifier {
-  background-color: #3498db;
-  color: #fff;
-}
-
-.btn-modifier:hover {
-  background-color: #2980b9;
-  transform: scale(1.05);
-  box-shadow: 0 3px 6px rgba(52, 152, 219, 0.4);
-}
-
-/* 🔴 Bouton Annuler */
-.btn-annuler {
-  background-color: #e74c3c;
-  color: #fff;
-}
-
-.btn-annuler:hover {
-  background-color: #c0392b;
-  transform: scale(1.05);
-  box-shadow: 0 3px 6px rgba(231, 76, 60, 0.4);
-}
-
-/* 💡 Pour mobile : les boutons s’empilent */
-@media (max-width: 600px) {
-  .appt-actions {
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .btn-modifier,
-  .btn-annuler {
-    width: 100%;
-  }
-}
-/* Overlay du modal */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-/* Contenu du modal */
-.modal-content {
-  background: #fff;
-  padding: 25px 30px;
-  border-radius: 12px;
-  width: 400px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-  animation: slideDown 0.3s ease;
-}
-
-.modal-content h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #2c3e50;
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-.modal-actions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 15px;
-}
-
-/* Boutons */
-.btn-save {
-  background-color: #27ae60;
-  color: white;
-  padding: 8px 14px;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
-}
-.btn-save:hover {
-  background-color: #1e8449;
-  transform: scale(1.05);
-}
-
-.btn-cancel {
-  background-color: #e74c3c;
-  color: white;
-  padding: 8px 14px;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
-}
-.btn-cancel:hover {
-  background-color: #c0392b;
-  transform: scale(1.05);
-}
-
 @keyframes slideDown {
-  from { transform: translateY(-30px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+    from { transform: translateY(-30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
